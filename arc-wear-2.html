@@ -1299,7 +1299,7 @@ body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height
   <div class="drawer-cat" onclick="drawerCat('cap',this)"><div class="drawer-cat-icon" style="background:#e8f4ff;">🧢</div>Caps<span class="drawer-cat-count">3</span></div>
   <div class="drawer-cat" onclick="drawerCat('accessories',this)"><div class="drawer-cat-icon" style="background:#f5f5f5;">💍</div>Accessories<span class="drawer-cat-count">2</span></div>
   <div class="drawer-actions">
-    <button class="drawer-btn drawer-btn-outline" onclick="openAuth()">Login / Sign Up</button>
+    <button class="drawer-btn drawer-btn-outline" id="drawerLoginBtn" onclick="openAuthOrProfile();closeDrawer()">Login / Sign Up</button>
     <button class="drawer-btn drawer-btn-outline" onclick="openOrders();closeDrawer()">📦 My Orders</button>
     <button class="drawer-btn drawer-btn-solid" onclick="openCartDrawer()">🛒 View Cart</button>
   </div>
@@ -3637,14 +3637,18 @@ function updateLoginBtn(){
   const auth = lsLoad(LS_AUTH,null);
   const btn = document.getElementById('loginNavBtn');
   const lbl = document.getElementById('loginNavLabel');
-  if(!btn||!lbl) return;
+  const drawerBtn = document.getElementById('drawerLoginBtn');
+
   if(auth){
     const user = lsLoad(LS_USER,{});
-    lbl.textContent = auth.name?.split(' ')[0]||user.fname||'Profile';
-    btn.style.color='var(--accent)';
+    const fname = auth.name?.split(' ')[0]||user.fname||'Profile';
+    if(btn) btn.style.color='var(--accent)';
+    if(lbl) lbl.textContent = fname;
+    if(drawerBtn){ drawerBtn.textContent = '👤 ' + fname + ' — Profile'; }
   } else {
-    lbl.textContent='Login';
-    btn.style.color='';
+    if(btn) btn.style.color='';
+    if(lbl) lbl.textContent='Login';
+    if(drawerBtn){ drawerBtn.textContent = 'Login / Sign Up'; }
   }
 }
 
